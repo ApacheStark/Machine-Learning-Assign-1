@@ -1,0 +1,91 @@
+---
+title: "MATH2319_Assignment_Part1"
+author: "Margaret Cuddihy (s3608125)"
+date: "8 April 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r echo=TRUE}
+ library(dplyr)
+# library(tidyr)
+ library(knitr)
+# library(mlr)
+# library(outliers)
+
+```
+
+```{r echo=TRUE}
+
+advertising_train <- read.csv("~/Uni/Machine Learning/advertising_train.csv", header = TRUE, stringsAsFactors = FALSE)
+
+head(advertising_train)
+tail(advertising_train)
+dim(advertising_train)
+str(advertising_train)
+names(advertising_train)
+class(advertising_train)
+```
+
+#Target Feature
+y: numeric revenue-related metric
+
+# Unique Identifier
+Case ID: categorical
+
+#20 Descriptive Features
+1. Company ID: categorical 
+2. Country ID: categorical
+3. Device Type: categorical (Corresponding to Desktop, Mobile, Table and unknown? Unique values = 1,2,3 and 5 )
+4. Day: integer (Day 1 to Day 30 in training data)
+5. DOW: categorical (day of the week)
+6. Price 1 (numeric)
+7. Price 2 (numeric)
+8. Price 3 (numeric)
+9. Ad Area (normalised between 1 and 0)
+10. Ad Ratio (normalised between 1 and 0)
+11. Requests (numeric)
+12. Impression (numeric)
+13. CPC (numeric)
+14. CTR (numeric)
+15. Viewability (numeric)
+16. Ratio 1 (normalised between 1 and 0)
+17. Ratio 2 (normalised between 1 and 0)
+18. Ratio 3 (normalised between 1 and 0)
+19. Ratio 4 (normalised between 1 and 0)
+20. Ratio 5 (normalised between 1 and 0)
+
+#214,218 Instances
+
+```{r echo=TRUE}
+kable(summary(advertising_train))
+
+advertising_train %>% group_by(ad_ratio) %>% summarize(count=n())
+
+```
+
+```{r}
+which(is.na(advertising_train)) 
+
+#No missing values detected
+
+#Check for special values
+is.special <- function(x){
+  if (is.numeric(x)) !is.finite(x)
+}
+
+sapply(advertising_train, is.special)
+
+#No special values detected
+```
+
+```{r}
+
+
+
+```
+
