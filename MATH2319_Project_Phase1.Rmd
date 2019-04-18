@@ -66,7 +66,7 @@ Case ID: categorical
 19. Ratio 4 (normalised between 1 and 0)
 20. Ratio 5 (normalised between 1 and 0)
 
-#214,218 Instances
+214,218 Instances
 
 # Cleaning and Preparing Data
 
