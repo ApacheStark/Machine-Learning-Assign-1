@@ -2,14 +2,21 @@
 title: "MATH2319_Assignment_Part1"
 author: "Margaret Cuddihy (s3608125)"
 date: "8 April 2019"
-output: html_document
+output: 
+   html_document:
+      toc: true
+      toc_depth: 3
+  
 ---
+# Introduction
+
+#### Put a description of data, goal for this report and what we will be inspecting and why.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
+## Packages
 ```{r echo=TRUE}
  library(dplyr)
 # library(tidyr)
@@ -18,7 +25,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # library(outliers)
 
 ```
-
+# Reading and Inspecting the Data
 ```{r echo=TRUE}
 
 advertising_train <- read.csv("~/Uni/Machine Learning/advertising_train.csv", header = TRUE, stringsAsFactors = FALSE)
@@ -31,13 +38,13 @@ names(advertising_train)
 class(advertising_train)
 ```
 
-#Target Feature
+## Target Feature
 y: numeric revenue-related metric
 
-# Unique Identifier
+## Unique Identifier
 Case ID: categorical
 
-#20 Descriptive Features
+## Descriptive Features
 1. Company ID: categorical 
 2. Country ID: categorical
 3. Device Type: categorical (Corresponding to Desktop, Mobile, Table and unknown? Unique values = 1,2,3 and 5 )
@@ -61,31 +68,63 @@ Case ID: categorical
 
 #214,218 Instances
 
+# Cleaning and Preparing Data
+
 ```{r echo=TRUE}
 kable(summary(advertising_train))
 
 advertising_train %>% group_by(ad_ratio) %>% summarize(count=n())
-
 ```
 
+## Special Values
+
+### Missing
 ```{r}
 which(is.na(advertising_train)) 
 
-#No missing values detected
+# No missing values detected
+```
 
-#Check for special values
+### Special
+```{r}
+# Check for special values
 is.special <- function(x){
   if (is.numeric(x)) !is.finite(x)
 }
 
 sapply(advertising_train, is.special)
 
-#No special values detected
+# No special values detected
 ```
 
+## Outliers
+
+### Univariate
 ```{r}
 
+```
+### Multivariate
+```{r}
 
+```
+
+# Visualisation
+
+## Bivariate Visuals with Respect to Target Feature
+```{r}
+
+```
+
+
+## Multivariate Visuals with Respect to Target Feature
+```{r}
+
+```
+
+# Statistical Investigation
+
+## Linear Correlations
+```{r}
 
 ```
 
