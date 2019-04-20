@@ -10,7 +10,15 @@ output:
 ---
 # Introduction
 
-#### The data chosen for machine learning training is Google advertising data. By training a machine learning algorithm to the descriptive features in the dataset, the target feature, a revenue metric labelled as y, can be predicted. Hence, the purpose of training a machine learning algorithm is that Google will be able to better predict the advertising specifications that optimise returns on clicks and potentially improve revenue returns.
+#### The data set chosen for machine learning training is Google advertising data. 
+
+The data set was made available on Kaggle as part of the MATH2319 competition and was accessed from the following link:
+https://www.kaggle.com/c/machine-learning-battle-mlmath2319/data
+
+#### Goal
+By training a machine learning algorithm to the descriptive features in the dataset, the target feature, a revenue metric labelled as y, can be predicted. Hence, the purpose of training a machine learning algorithm is that Google will be able to better predict the advertising specifications that optimise returns on clicks and potentially improve revenue returns.
+
+#### Description of the Data Set
 The dataset instances are comprised of website traffic records from around the world. Descriptive features include:
 •	companyId: - Company ID of record (categorical)
 •	countryId: - Country ID of record (categorical)
@@ -24,8 +32,8 @@ The dataset instances are comprised of website traffic records from around the w
 •	ratio1, …, ratio5: - Ratio characteristics related to the record (each normalized between 0 and 1)
 •	y (target feature): - revenue-related metric (numeric)
 The currency features are in US Dollars.
-The data set was made available on Kaggle as part of the MATH2319 competition and was accessed from the following link:
-https://www.kaggle.com/c/machine-learning-battle-mlmath2319/data
+
+#### Structure of Phase 1
 First, the data will be inspected, and any necessary pre-processing will be undertaken to ensure the data set is clean and ready for modelling.
 1.	Data structure and dimensions will be determined
 2.	Data will be checked for any missing or special values which will be appropriately imputed
