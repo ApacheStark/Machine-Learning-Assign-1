@@ -10,7 +10,32 @@ output:
 ---
 # Introduction
 
-#### Put a description of data, goal for this report and what we will be inspecting and why.
+#### The data chosen for machine learning training is Google advertising data. By training a machine learning algorithm to the descriptive features in the dataset, the target feature, a revenue metric labelled as y, can be predicted. Hence, the purpose of training a machine learning algorithm is that Google will be able to better predict the advertising specifications that optimise returns on clicks and potentially improve revenue returns.
+The dataset instances are comprised of website traffic records from around the world. Descriptive features include:
+•	companyId: - Company ID of record (categorical)
+•	countryId: - Country ID of record (categorical)
+•	deviceType: - Device type of record (categorical corresponding to desktop, mobile, tablet)
+•	day: -Day of record (integer between 1 (oldest) and 30 for train, 31 and 35 (most recent) for test)
+•	dow: - Day of week of the record (categorical)
+•	price1, price2, price3: - Price combination for the record set by the company (numeric)
+•	ad_area: - area of advertisement (normalized between 0 and 1)
+•	ad_ratio: - ratio of advertisement’s length to its width (normalized between 0 and 1)
+•	requests, impression, cpc, ctr, viewability: - Various metrics related to the record (numeric)
+•	ratio1, …, ratio5: - Ratio characteristics related to the record (each normalized between 0 and 1)
+•	y (target feature): - revenue-related metric (numeric)
+The currency features are in US Dollars.
+The data set was made available on Kaggle as part of the MATH2319 competition and was accessed from the following link:
+https://www.kaggle.com/c/machine-learning-battle-mlmath2319/data
+First, the data will be inspected, and any necessary pre-processing will be undertaken to ensure the data set is clean and ready for modelling.
+1.	Data structure and dimensions will be determined
+2.	Data will be checked for any missing or special values which will be appropriately imputed
+3.	Data will be checked for outliers which will be handled as necessary
+Second, the descriptive features of the data will be explored in order to identify significant relationships between features that will guide the machine learning modelling. For instance, descriptive features with strong correlation may be redundant to predictive modelling.
+1.	Distribution of descriptive feature levels will be examined
+2.	Correlation between descriptive features will be calculated
+3.	Correlation between descriptive features and the target feature will be calculated
+The aim of this is to identify the descriptive features most useful for predicting the target variable, the revenue metric y.
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
