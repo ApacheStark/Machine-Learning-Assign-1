@@ -424,6 +424,49 @@ boxplot(advertising_train$y)
 
 ### Multivariate
 ```{r}
+y <- advertising_train$y
+
+boxplot(y~advertising_train$companyId)
+
+plot(y~advertising_train$countryId)
+
+boxplot(y~advertising_train$deviceType)
+
+plot(y~advertising_train$day)
+
+boxplot(y~advertising_train$dow)
+
+plot(y~advertising_train$price1)
+
+plot(y~advertising_train$price2)
+
+plot(y~advertising_train$price3)
+
+plot(y~advertising_train$ad_ratio)
+
+plot(y~advertising_train$ad_area)
+
+plot(y~advertising_train$requests)
+
+plot(y~advertising_train$impression)
+
+plot(y~advertising_train$cpc)
+
+plot(y~advertising_train$ctr)
+
+plot(y~advertising_train$viewability)
+
+plot(y~advertising_train$requests)
+
+plot(y~advertising_train$ratio1)
+
+plot(y~advertising_train$ratio2)
+
+plot(y~advertising_train$ratio3)
+
+plot(y~advertising_train$ratio4)
+
+plot(y~advertising_train$ratio5)
 
 
 ```
