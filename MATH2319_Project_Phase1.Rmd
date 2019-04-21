@@ -4,9 +4,13 @@ author: "Margaret Cuddihy (s3608125)"
 date: "8 April 2019"
 output: 
    html_document:
+      includes:
+      in_header: header.html
+      before_body: doc_prefix.html
+      after_body: doc_suffix.html
       toc: true
       toc_depth: 3
-  
+      
 ---
 # Introduction
 
@@ -120,7 +124,7 @@ which(is.na(advertising_train))
 ```
 
 ### Special
-```{r}
+```{r include=FALSE}
 # Check for special values
 is.special <- function(x){
   if (is.numeric(x)) !is.finite(x)
