@@ -161,6 +161,7 @@ country %>%
     ggplot(aes(x = countryId, y = count)) +
     geom_col()
 
+
 #If only we knew...what the country IDs stood for!!!
 
 #--------------------[Device Type]----------------------#
@@ -200,6 +201,7 @@ day <- advertising_train %>%
     summarize(count=n())
 
 hist(advertising_train$day)
+boxplot(advertising_train$day)
 
 #Fairly uniform distribution, bit lower at start of training period
 
@@ -214,8 +216,9 @@ advertising_train %>%
     summarize(count=n())
 
 hist(price1)
+boxplot(price1)
 
-#Vast majority is 0 - 0.01??
+#Vast majority is 0 - 0.01?? All the outliers...
 
 #--------------------[Price 2]----------------------#
 
@@ -228,6 +231,7 @@ advertising_train %>%
     summarize(count=n())
 
 hist(price2)
+boxplot(price2)
 
 #Vast majority is 0
 
@@ -241,6 +245,7 @@ advertising_train %>%
     summarize(count=n())
 
 hist(price3)
+boxplot(price3)
 
 #Vast majority is 0
 
@@ -255,6 +260,7 @@ advertising_train %>%
     summarize(count=n())
 
 hist(adar)
+boxplot(adar)
 
 #Most instances of ad area are 0.0001., Max is 36 - thought this was normalised between 0 and 1?
 
@@ -271,6 +277,7 @@ advertising_train %>%
     summarize(count=n())
 
 hist(adra)
+boxplot(adra)
 
 #Think we can play around with the binning for this maybe?
 
@@ -285,6 +292,7 @@ advertising_train %>%
     summarize(count=n())
 
 hist(reqs)
+boxplot(reqs)
 
 #Oh lordy...
 
@@ -299,6 +307,7 @@ advertising_train %>%
     summarize(count=n())
 
 hist(imp)
+boxplot(imp)
 
 #--------------------[CPC - Cost per click]----------------------#
 
@@ -311,6 +320,7 @@ advertising_train %>%
     summarize(count=n())
 
 hist(cpc)
+boxplot(cpc)
 
 
 #--------------------[CTR - click through rate]----------------------#
@@ -324,6 +334,7 @@ advertising_train %>%
     summarize(count=n())
 
 hist(ctr)
+boxplot(ctr)
 
 
 #--------------------[Viewability]----------------------#
@@ -337,6 +348,7 @@ advertising_train %>%
     summarize(count=n())
 
 hist(view)
+boxplot(view)
 
 
 #--------------------[Ratio 1]----------------------#
@@ -348,6 +360,7 @@ advertising_train %>%
     summarize(count=n())
 
 hist(advertising_train$ratio1)
+boxplot(advertising_train$ratio1)
 
 #--------------------[Ratio 2]----------------------#
 
@@ -358,6 +371,7 @@ advertising_train %>%
     summarize(count=n())
 
 hist(advertising_train$ratio2)
+boxplot(advertising_train$ratio2)
 
 #--------------------[Ratio 3]----------------------#
 
@@ -368,6 +382,7 @@ advertising_train %>%
     summarize(count=n())
 
 hist(advertising_train$ratio3)
+boxplot(advertising_train$ratio3)
 
 #--------------------[Ratio 4]----------------------#
 
@@ -378,6 +393,7 @@ advertising_train %>%
     summarize(count=n())
 
 hist(advertising_train$ratio4)
+boxplot(advertising_train$ratio4)
 
 #--------------------[Ratio 5]----------------------#
 
@@ -388,11 +404,27 @@ advertising_train %>%
     summarize(count=n())
 
 hist(advertising_train$ratio5)
+boxplot(advertising_train$ratio5)
 
-#Hmmm very interesting, if only we knew what these were ratios of 
+#Hmmm very interesting, if only we knew what these were ratios of!
+
+
+#--------------------[Target Variable (y)]----------------------#
+
+summary(advertising_train$y)
+
+advertising_train %>% 
+    group_by(y) %>% 
+    summarize(count=n())
+
+hist(advertising_train$y)
+boxplot(advertising_train$y)
+
 ```
+
 ### Multivariate
 ```{r}
+
 
 ```
 
@@ -400,6 +432,7 @@ hist(advertising_train$ratio5)
 
 ## Bivariate Visuals with Respect to Target Feature
 ```{r}
+
 
 ```
 
