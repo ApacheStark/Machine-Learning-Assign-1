@@ -122,12 +122,15 @@ advertising_train %>% group_by(ad_ratio) %>% summarize(count=n())
 # country id
 # deviceType
 # day
-for (i in 1:5) train[,i] <- factor(train[,i])
+for (i in 1:5) advertising_train[,i] <- factor(advertising_train[,i])
 ```
 
 ### Log Transform
 The following function will log transform all integer and numeric data, also considers zero or negative values in the scale and adds a scalar value to the column before transformation if this parameter is met.
 ```{r}
+# Make a copy of non-transformed
+train <- advertising_train
+# Create log trans function
 log_trans <- function(x) {
   for (i in 1:ncol(x))  
   if (class(x[,i]) == 'integer' | class(x[,i]) == 'numeric') {
@@ -140,6 +143,7 @@ log_trans <- function(x) {
   }
   return(x)
 }
+train_log <- log_trans(advertising_train)
 ```
 ## Special Values
 
@@ -505,11 +509,27 @@ plot(y~advertising_train$ratio5)
 # Visualisation
 
 ## Bivariate Visuals with Respect to Target Feature
-```{r}
 
+### Prices
+```{r}
+# Pre Log trans PRICE
+par(mfrow = c(3,1))
+plot(train$price1, train$y) # all pos skewed, majority at lower quartile of range, trace values at upper 3 quartiles
+plot(train$price2, train$y)
+plot(train$price3, train$y)
 
 ```
-
+### Ratios
+```{r}
+# Pre Log trans RATIO
+par(mfrow = c(1,5))
+plot(train$ratio1, train$y) # majority of variation at 0 and 1 ratios 
+plot(train$ratio2, train$y) # majority of variation at 0 and 1 ratios 
+plot(train$ratio3, train$y) # majority of variation at 0 and 1 ratios, with some exceeding 1 
+plot(train$ratio4, train$y) # majority of variation at 0 
+plot(train$ratio5, train$y) # majority of variation at 0 and some at 1 ratios, with some exceeding 1
+par(mfrow = c(1,1))
+```
 
 ## Multivariate Visuals with Respect to Target Feature
 ```{r}
