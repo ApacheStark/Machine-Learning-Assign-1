@@ -113,7 +113,34 @@ kable(summary(advertising_train))
 
 advertising_train %>% group_by(ad_ratio) %>% summarize(count=n())
 ```
+## Transformation and Pre Processing
 
+### Factorisation of Categorical Variables
+```{r}
+# case_id can be filtered
+# company id
+# country id
+# deviceType
+# day
+for (i in 1:5) train[,i] <- factor(train[,i])
+```
+
+### Log Transform
+The following function will log transform all integer and numeric data, also considers zero or negative values in the scale and adds a scalar value to the column before transformation if this parameter is met.
+```{r}
+log_trans <- function(x) {
+  for (i in 1:ncol(x))  
+  if (class(x[,i]) == 'integer' | class(x[,i]) == 'numeric') {
+    if (min(x[,i]) <= 0) {
+      x[,i] <- x[,i] + min(x[,i]) + 0.1
+      x[,i] <- log(x[,i])
+    } else {
+    x[,i] <- log(x[,i])
+    } 
+  }
+  return(x)
+}
+```
 ## Special Values
 
 ### Missing
