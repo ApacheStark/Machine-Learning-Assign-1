@@ -255,6 +255,23 @@ boxplot(price1)
 
 #Vast majority is 0 - 0.01?? All the outliers...
 
+price1_log <- train_log$price1
+summary(price1_log)
+
+train_log%>% 
+    group_by(price1) %>% 
+    summarize(count=n())
+
+hist(price1_log)
+boxplot(price1_log)
+
+par(mfrow = c(1,4))
+hist(price1)
+boxplot(price1)
+
+hist(price1_log)
+boxplot(price1_log)
+
 #--------------------[Price 2]----------------------#
 
 
@@ -457,7 +474,7 @@ boxplot(advertising_train$y)
 
 ```
 
-### Multivariate
+### Multivariate 
 ```{r}
 y <- advertising_train$y
 
@@ -505,6 +522,14 @@ plot(y~advertising_train$ratio5)
 
 
 ```
+
+```{r}
+
+train
+
+```
+
+
 
 # Visualisation
 
