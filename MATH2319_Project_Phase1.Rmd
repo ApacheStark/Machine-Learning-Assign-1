@@ -61,6 +61,8 @@ knitr::opts_chunk$set(echo = TRUE)
 # library(mlr)
 # library(outliers)
 library(ggplot2)
+library(Hmisc)
+library(corrplot)
 
 ```
 # Reading and Inspecting the Data
@@ -523,13 +525,6 @@ plot(y~advertising_train$ratio5)
 
 ```
 
-```{r}
-
-train
-
-```
-
-
 
 # Visualisation
 
@@ -537,11 +532,30 @@ train
 
 ### Prices
 ```{r}
+
+#Calculate Average Price and Maximum Price
+train1 <- train %>% mutate(avg_price = (price1*price2*price3)/3,
+                           max_price = pmax(price1, price2, price3))
+
+summary(train1$avg_price)
+summary(train1$max_price)
+
+par(mfrow = c(3,1))
+plot(train1$avg_price, train1$y)
+plot(train1$max_price, train1$y)
+par(mfrow = c(1,1))
+
 # Pre Log trans PRICE
 par(mfrow = c(3,1))
 plot(train$price1, train$y) # all pos skewed, majority at lower quartile of range, trace values at upper 3 quartiles
 plot(train$price2, train$y)
 plot(train$price3, train$y)
+par(mfrow = c(1,1))
+
+
+
+
+
 
 ```
 ### Ratios
@@ -625,6 +639,66 @@ summary(cpcmore_y)
 
 ## Linear Correlations
 ```{r}
+
+
+#Calculate correlation of numeric variables:
+train_num <- train %>% select(price1, price2, price3, ad_area, ad_ratio, requests, impression, cpc, ctr, viewability, ratio1, ratio2, ratio3, ratio4, ratio5)
+res <- cor(train_num)
+round(res, 2)
+
+pairs(res) #crazy small
+
+heatmap(res) #Looks cool but not sure if easy to interpret?
+
+corrplot(res, order = "hclust", 
+         tl.col = "black", tl.srt = 45)
+
+#I like this one the best - can see there is positive correlation amongst price features
+#Very Strong positive correlation between Impression and Request
+#Very Strong positive correlation between Price 1, Price 2 and Price 3
+#Very strong positive correlation between Ratio 1 and Viewability 
+#Strong positive correlation between Ratio 2 and Viewability 
+#Strong positive correlation between Ratio 1 and Ratio 2
+
+train_price <- train %>% select(price1,price2,price3)
+res_price <- cor(train_price)
+round(res_price,2)
+
+#Correlation between Price 1 and Price 2: 0.9
+#Correlation between Price 2 and Price 3: 0.94
+#Correlation between Price 3 and Price 1: 0.77
+
+#Possibly only need 1 price variable for training the algorithm as correlation is very high
+
+train_ratio <- train %>% select(ratio1, ratio2, ratio3, ratio4, ratio5)
+res_ratio <- cor(train_ratio)
+round(res_ratio,2)
+corrplot(res_ratio, order = "hclust", 
+         tl.col = "black", tl.srt = 45)
+
+#Correlation between Ratio 1 and Ratio 2 is 0.84
+#Correlation between Ratio 1 and Ratio 3 is 0.52
+#Correlation between Ratio 2 and Ratio 5 is 0.48
+#Correlation between Ratio 5 and Ratio 1 nis 0.45
+#Correlation between Ratio 2 and Ratio 3 is 0.43
+#All other ratio features have weaker correlation
+#Ratio 3 is negatively correlated to Ratio 4 and Ratio 5, yet positively correlated to Ratio 1 and Ratio 2 (which are positively correlated to Ratio 4 and Ratio 5)
+
+train_metrics <- train %>% select(ad_area, ad_ratio, requests, impression, cpc, ctr, viewability)
+res_metrics <- cor(train_metrics)
+round(res_metrics, 2)
+corrplot(res_metrics, order = "hclust", 
+         tl.col = "black", tl.srt = 45)
+
+#Correlation between Impression and Requests is 0.98 
+#Correlation between Viewability and CTR is 0.41
+#All other metrics have weak correlation
+
+res_y <- cor(train$y,train_num)
+round(res_y, 3)
+
+#None of the descriptive features are highly correlated with the target feature y. 
+
 
 ```
 
