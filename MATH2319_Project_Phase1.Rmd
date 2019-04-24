@@ -556,6 +556,66 @@ plot(train$ratio5, train$y) # majority of variation at 0 and some at 1 ratios, w
 par(mfrow = c(1,1))
 ```
 
+### CPC and CTR
+Cost Per Click (also known as PPC, Pay Per Click) and Click Through Rate will be investigated for impact on each other and on the target variable.
+```{r}
+# COST PER CLICKS
+# This is the advertising cost per click for given ad, as price goes up, the 'rank' of the ad decreases exponentially.
+# Essentially, you want to minimise cost per click, which reflects your score, visa versa.
+cpc_id_box <- boxplot(cpc ~ companyId, data = train)
+cpc_filt <- train %>% select(companyId, cpc) %>%  filter(cpc > 0 & cpc < 1)
+cpc_filt_box <- boxplot(cpc ~ companyId, data = cpc_filt) # company makes a difference
+cpc_zero <- train %>% select(companyId, cpc) %>%  group_by(companyId) %>% filter(cpc == 0) %>%  summarise(ZeroVal = n())
+cpc_more <- train %>% select(companyId, cpc) %>%  group_by(companyId) %>%  summarise(Total = n())
+cpc_tbl <- cbind(cpc_zero, cpc_more[2]) %>%  as.tbl %>%  mutate(Ratio = ZeroVal / Total,
+                                                                NonZero = Total - ZeroVal)
+# RATIO OF ZERO CPC TO TOTAL
+ggplot(data = cpc_tbl,
+       mapping = aes(y = Ratio, x = companyId, fill = companyId)) +
+  geom_bar(stat = 'identity', position = 'dodge') + 
+  labs(title = 'Ratio of Zero Values against Total')
+```
+```{r}
+# CLICK THROUGH RATE
+# Perecentage of viewers on a web page who selected a hyperlink to a site
+# CTR = (Total Measured Clicks/Total Measured Ad Impressions) * 100
+# Clicks are per click, ad impression is the appearance of an ad (clicked or not)
+ctr_id_box <- boxplot(ctr ~ companyId, data = train) 
+ctr_filt <- train %>%  select(companyId, ctr) %>%  filter(ctr > 0)
+ctr_filt_box <- boxplot(ctr ~ companyId, data = ctr_filt) # many 0 values for ID 43
+ctr_zero <- train %>%  select(companyId, ctr) %>% group_by(companyId) %>% filter(ctr == 0) %>%  summarise(ZeroVal = n())
+ctr_more <- train %>%  select(companyId, ctr) %>%  group_by(companyId) %>% summarise(Total = n())
+ctr_tbl <- cbind(ctr_zero, ctr_more[2]) %>%  as.tbl %>%  mutate(Ratio = ZeroVal / Total,
+                                                                NonZero = Total - ZeroVal)
+# RATIO OF ZERO CTR TO TOTAL 
+ggplot(data = ctr_tbl,
+       mapping = aes(y = Ratio, x = companyId, fill = companyId)) +
+  geom_bar(stat = 'identity', position = 'dodge') + 
+  labs(title = 'Ratio of Zero Values against Total') # absolutely no difference to
+
+# CPC against CTR
+plot(cpc ~ ctr, data = train,
+     ylab = 'Cost Per Click',
+     xlab = 'Click Through Rate')
+# CTR decreases to nothing, the less appealing the ad, the more likely the the advertiser is charged higher for the less appealing ad
+```
+```{r}
+# Bivariate analysis of partitioned data with respect to Target Feature y
+# CTR Summary
+ctrzero_y <- train %>% select(companyId, ctr, y) %>%  filter(ctr == 0)
+summary(ctrzero_y)
+ctrmore_y <- train %>% select(companyId, ctr, y) %>%  filter(ctr > 0)
+summary(ctrmore_y)
+# all metrics (with exception of Max value) increase for y when looking at higher click through rates
+# CPC Summary
+cpczero_y <- train %>% select(companyId, cpc, y) %>%  filter(cpc == 0)
+summary(cpczero_y)
+cpcmore_y <- train %>%  select(companyId, cpc, y) %>% filter(cpc > 0)
+summary(cpcmore_y)
+# same results to CTR summary with rescpt to target feature y
+```
+
+
 ## Multivariate Visuals with Respect to Target Feature
 ```{r}
 
