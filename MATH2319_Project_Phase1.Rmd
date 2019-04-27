@@ -171,8 +171,8 @@ sapply(advertising_train, is.special)
 ## Outliers
 
 ### Univariate
-```{r}
 
+```{r}
 #Categorical Features 
 
 #--------------------[Company]----------------------#
@@ -186,7 +186,8 @@ company %>%
     geom_col()
 
 #Not sure about this one, looks weird. Would like to do more of a bar plot but the no of observations makes it difficult. 
-
+```
+```{r}
 
 #--------------------[Country]----------------------#
 
@@ -200,7 +201,8 @@ country %>%
 
 
 #If only we knew...what the country IDs stood for!!!
-
+```
+```{r}
 #--------------------[Device Type]----------------------#
 
 device <- advertising_train %>% 
@@ -212,7 +214,8 @@ device %>%
     geom_col()
 
 #My guess was that device type was like 1 = tablet, 2 = phone, 3 = computer but I'm not sure?
-
+```
+```{r}
 #--------------------[Day of Week]----------------------#
 
 day.of.week <- advertising_train %>% 
@@ -222,14 +225,16 @@ day.of.week <- advertising_train %>%
 day.of.week %>% 
     ggplot(aes(x = dow, y = count)) +
     geom_col()
-
+```
+```{r}
 #Saturday and Sunday most number of records
 
 
 
 
 #Numeric Features
-
+```
+```{r}
 #--------------------[Day]----------------------#
 
 summary(advertising_train$day)
@@ -241,7 +246,8 @@ hist(advertising_train$day)
 boxplot(advertising_train$day)
 
 #Fairly uniform distribution, bit lower at start of training period
-
+```
+```{r}
 #--------------------[Price 1]----------------------#
 
 
@@ -273,7 +279,8 @@ boxplot(price1)
 
 hist(price1_log)
 boxplot(price1_log)
-
+```
+```{r}
 #--------------------[Price 2]----------------------#
 
 
@@ -288,7 +295,8 @@ hist(price2)
 boxplot(price2)
 
 #Vast majority is 0
-
+```
+```{r}
 #--------------------[Price 3]----------------------#
 
 price3 <- advertising_train$price3
@@ -302,7 +310,8 @@ hist(price3)
 boxplot(price3)
 
 #Vast majority is 0
-
+```
+```{r}
 #--------------------[Ad Area]----------------------#
 
 
@@ -317,7 +326,8 @@ hist(adar)
 boxplot(adar)
 
 #Most instances of ad area are 0.0001., Max is 36 - thought this was normalised between 0 and 1?
-
+```
+```{r}
 #--------------------[Ad Ratio]----------------------#
 
 
@@ -334,7 +344,8 @@ hist(adra)
 boxplot(adra)
 
 #Think we can play around with the binning for this maybe?
-
+```
+```{r}
 #--------------------[Requests]----------------------#
 
 
@@ -349,7 +360,8 @@ hist(reqs)
 boxplot(reqs)
 
 #Oh lordy...
-
+```
+```{r}
 #--------------------[Impression]----------------------#
 
 
@@ -362,7 +374,8 @@ advertising_train %>%
 
 hist(imp)
 boxplot(imp)
-
+```
+```{r}
 #--------------------[CPC - Cost per click]----------------------#
 
 
@@ -375,8 +388,8 @@ advertising_train %>%
 
 hist(cpc)
 boxplot(cpc)
-
-
+```
+```{r}
 #--------------------[CTR - click through rate]----------------------#
 
 
@@ -390,7 +403,8 @@ advertising_train %>%
 hist(ctr)
 boxplot(ctr)
 
-
+```
+```{r}
 #--------------------[Viewability]----------------------#
 
 
@@ -404,7 +418,8 @@ advertising_train %>%
 hist(view)
 boxplot(view)
 
-
+```
+```{r}
 #--------------------[Ratio 1]----------------------#
 
 summary(advertising_train$ratio1)
@@ -415,7 +430,8 @@ advertising_train %>%
 
 hist(advertising_train$ratio1)
 boxplot(advertising_train$ratio1)
-
+```
+```{r}
 #--------------------[Ratio 2]----------------------#
 
 summary(advertising_train$ratio2)
@@ -426,7 +442,8 @@ advertising_train %>%
 
 hist(advertising_train$ratio2)
 boxplot(advertising_train$ratio2)
-
+```
+```{r}
 #--------------------[Ratio 3]----------------------#
 
 summary(advertising_train$ratio3)
@@ -437,7 +454,8 @@ advertising_train %>%
 
 hist(advertising_train$ratio3)
 boxplot(advertising_train$ratio3)
-
+```
+```{r}
 #--------------------[Ratio 4]----------------------#
 
 summary(advertising_train$ratio4)
@@ -448,7 +466,8 @@ advertising_train %>%
 
 hist(advertising_train$ratio4)
 boxplot(advertising_train$ratio4)
-
+```
+```{r}
 #--------------------[Ratio 5]----------------------#
 
 summary(advertising_train$ratio5)
@@ -462,7 +481,8 @@ boxplot(advertising_train$ratio5)
 
 #Hmmm very interesting, if only we knew what these were ratios of!
 
-
+```
+```{r}
 #--------------------[Target Variable (y)]----------------------#
 
 summary(advertising_train$y)
@@ -551,12 +571,6 @@ plot(train$price1, train$y) # all pos skewed, majority at lower quartile of rang
 plot(train$price2, train$y)
 plot(train$price3, train$y)
 par(mfrow = c(1,1))
-
-
-
-
-
-
 ```
 ### Ratios
 ```{r}
@@ -701,4 +715,6 @@ round(res_y, 3)
 
 
 ```
+# Summary
+
 
