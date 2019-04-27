@@ -1,7 +1,7 @@
 ---
 title: "MATH2319_Assignment_Part1"
-author: "Margaret Cuddihy (s3608125)"
-date: "8 April 2019"
+author: "Samuel Holt (s3381728) and Margaret Cuddihy (s3608125)"
+date: "28 April 2019"
 output: 
    html_document:
       includes:
@@ -113,7 +113,7 @@ Case ID: categorical
 ```{r echo=TRUE}
 kable(summary(advertising_train))
 
-advertising_train %>% group_by(ad_ratio) %>% summarize(count=n())
+advertising_train %>% group_by(ad_ratio) %>% dplyr::summarise(count=n())
 ```
 ## Transformation and Pre Processing
 
@@ -179,7 +179,7 @@ sapply(advertising_train, is.special)
 
 company <- advertising_train %>% 
     group_by(companyId) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 company %>% 
     ggplot(aes(x = companyId, y = count)) +
@@ -193,7 +193,7 @@ company %>%
 
 country <- advertising_train %>% 
     group_by(countryId) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 country %>% 
     ggplot(aes(x = countryId, y = count)) +
@@ -207,7 +207,7 @@ country %>%
 
 device <- advertising_train %>% 
     group_by(deviceType) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 device %>% 
     ggplot(aes(x = deviceType, y = count)) +
@@ -220,33 +220,28 @@ device %>%
 
 day.of.week <- advertising_train %>% 
     group_by(dow) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 day.of.week %>% 
     ggplot(aes(x = dow, y = count)) +
     geom_col()
-```
-```{r}
+
 #Saturday and Sunday most number of records
-
-
-
-
-#Numeric Features
 ```
 ```{r}
 #--------------------[Day]----------------------#
 
-summary(advertising_train$day)
 day <- advertising_train %>% 
     group_by(day) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
-hist(advertising_train$day)
-boxplot(advertising_train$day)
+day %>% 
+    ggplot(aes(x = day, y = count)) +
+    geom_col()
 
 #Fairly uniform distribution, bit lower at start of training period
 ```
+#Numeric Features
 ```{r}
 #--------------------[Price 1]----------------------#
 
@@ -256,7 +251,7 @@ summary(price1)
 
 advertising_train %>% 
     group_by(price1) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 hist(price1)
 boxplot(price1)
@@ -268,7 +263,7 @@ summary(price1_log)
 
 train_log%>% 
     group_by(price1) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 hist(price1_log)
 boxplot(price1_log)
@@ -289,7 +284,7 @@ summary(price2)
 
 advertising_train %>% 
     group_by(price2) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 hist(price2)
 boxplot(price2)
@@ -304,7 +299,7 @@ summary(price3)
 
 advertising_train %>% 
     group_by(price3) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 hist(price3)
 boxplot(price3)
@@ -320,7 +315,7 @@ summary(adar)
 
 advertising_train %>% 
     group_by(ad_area) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 hist(adar)
 boxplot(adar)
@@ -338,7 +333,7 @@ summary(adra)
 
 advertising_train %>% 
     group_by(ad_ratio) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 hist(adra)
 boxplot(adra)
@@ -354,7 +349,7 @@ summary(reqs)
 
 advertising_train %>% 
     group_by(requests) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 hist(reqs)
 boxplot(reqs)
@@ -370,7 +365,7 @@ summary(imp)
 
 advertising_train %>% 
     group_by(impression) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 hist(imp)
 boxplot(imp)
@@ -384,7 +379,7 @@ summary(cpc)
 
 advertising_train %>% 
     group_by(cpc) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 hist(cpc)
 boxplot(cpc)
@@ -398,7 +393,7 @@ summary(ctr)
 
 advertising_train %>% 
     group_by(ctr) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 hist(ctr)
 boxplot(ctr)
@@ -413,7 +408,7 @@ summary(view)
 
 advertising_train %>% 
     group_by(viewability) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 hist(view)
 boxplot(view)
@@ -426,7 +421,7 @@ summary(advertising_train$ratio1)
 
 advertising_train %>% 
     group_by(ratio1) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 hist(advertising_train$ratio1)
 boxplot(advertising_train$ratio1)
@@ -438,7 +433,7 @@ summary(advertising_train$ratio2)
 
 advertising_train %>% 
     group_by(ratio2) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 hist(advertising_train$ratio2)
 boxplot(advertising_train$ratio2)
@@ -450,7 +445,7 @@ summary(advertising_train$ratio3)
 
 advertising_train %>% 
     group_by(ratio3) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 hist(advertising_train$ratio3)
 boxplot(advertising_train$ratio3)
@@ -462,7 +457,7 @@ summary(advertising_train$ratio4)
 
 advertising_train %>% 
     group_by(ratio4) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 hist(advertising_train$ratio4)
 boxplot(advertising_train$ratio4)
@@ -474,7 +469,7 @@ summary(advertising_train$ratio5)
 
 advertising_train %>% 
     group_by(ratio5) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 hist(advertising_train$ratio5)
 boxplot(advertising_train$ratio5)
@@ -489,7 +484,7 @@ summary(advertising_train$y)
 
 advertising_train %>% 
     group_by(y) %>% 
-    summarize(count=n())
+    dplyr::summarise(count=n())
 
 hist(advertising_train$y)
 boxplot(advertising_train$y)
@@ -641,12 +636,6 @@ summary(cpczero_y)
 cpcmore_y <- train %>%  select(companyId, cpc, y) %>% filter(cpc > 0)
 summary(cpcmore_y)
 # same results to CTR summary with rescpt to target feature y
-```
-
-
-## Multivariate Visuals with Respect to Target Feature
-```{r}
-
 ```
 
 # Statistical Investigation
