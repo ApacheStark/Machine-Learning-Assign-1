@@ -4,12 +4,10 @@ author: "Samuel Holt (s3381728) and Margaret Cuddihy (s3608125)"
 date: "28 April 2019"
 output: 
    html_document:
-      includes:
-      in_header: latex/header.tex
-      before_body: latex/before_body.tex
-      after_body: latex/after_body.tex
       toc: true
       toc_depth: 3
+      prettydoc::html_pretty:
+      theme: tactile
       
 ---
 
@@ -31,17 +29,29 @@ For this first phase of the project, the objective is to inspect the data items 
 
 #### Description of the Data Set
 The dataset instances are comprised of website traffic records from around the world. Descriptive features include:
+
 * companyId: - Company ID of record (categorical)
+
 *	countryId: - Country ID of record (categorical)
+
 *	deviceType: - Device type of record (categorical corresponding to desktop, mobile, tablet)
+
 *	day: -Day of record (integer between 1 (oldest) and 30 for train, 31 and 35 (most recent) for test)
+
 *	dow: - Day of week of the record (categorical)
+
 *	price1, price2, price3: - Price combination for the record set by the company (numeric)
+
 *	ad_area: - area of advertisement (normalized between 0 and 1)
+
 *	ad_ratio: - ratio of advertisement's length to its width (normalized between 0 and 1)
+
 *	requests, impression, cpc, ctr, viewability: - Various metrics related to the record (numeric)
+
 *	ratio1 - ratio5: - Ratio characteristics related to the record (each normalized between 0 and 1)
+
 *	y (target feature): - revenue-related metric (numeric)
+
 The currency features are in US Dollars.
 
 #### Structure of Phase 1
@@ -197,8 +207,10 @@ company <- advertising_train %>%
 company %>% 
     ggplot(aes(x = companyId, y = count)) +
     geom_col()
-
 ```
+Company:  
+The majority of instances belong to Company ID 43. 
+
 ```{r}
 
 #--------------------[Country]----------------------#
@@ -213,6 +225,9 @@ country %>%
 
 
 ```
+Country ID:  
+We do not have access to the Country ID concordance to country names
+
 ```{r}
 #--------------------[Device Type]----------------------#
 
@@ -225,6 +240,9 @@ device %>%
     geom_col()
 
 ```
+Device Type:  
+Majority level of device type is 2. 
+
 ```{r}
 #--------------------[Day of Week]----------------------#
 
@@ -240,8 +258,11 @@ day.of.week %>%
     ggplot(aes(x = dow, y = count)) +
     geom_col()
 
-#Saturday and Sunday most number of records
+
 ```
+Day of Week:  
+There is a higher level of instances on Saturday and Sunday. 
+
 ```{r}
 #--------------------[Day]----------------------#
 
@@ -253,7 +274,7 @@ day %>%
     ggplot(aes(x = day, y = count)) +
     geom_col()
 
-#Fairly uniform distribution, bit lower at start of training period
+
 ```
 #Numeric Features
 ```{r}
@@ -336,22 +357,34 @@ boxplot(price3_log)
 
 Price Features:  
 Majority of values are zero and the distribution is heavily positively skewed. 
-The log transformation normalises the distibution slightly.
+The log transformation normalises the distibution slightly, but as it does not offer much improvement, we will use the original data. 
 
 
 ```{r}
 #--------------------[Ad Area]----------------------#
 
 
-ad_area <- advertising_train$ad_area
+ad_area <- train$ad_area
 summary(ad_area)
 
-advertising_train %>% 
+train %>% 
     group_by(ad_area) %>% 
     dplyr::summarise(count=n())
-par(mfrow = c(1,2))
+
+
+ad_area_log <- train_log$ad_area
+summary(ad_area_log)
+
+train_log%>% 
+    group_by(ad_area) %>% 
+    dplyr::summarise(count=n())
+
+par(mfrow = c(1,4))
 hist(ad_area)
 boxplot(ad_area)
+
+hist(ad_area_log)
+boxplot(ad_area_log)
 
 
 ```
@@ -359,105 +392,181 @@ boxplot(ad_area)
 #--------------------[Ad Ratio]----------------------#
 
 
-ad_ratio <- advertising_train$ad_ratio
+ad_ratio <- train$ad_ratio
 summary(ad_ratio)
 
-advertising_train %>% 
+train %>% 
     group_by(ad_ratio) %>% 
     dplyr::summarise(count=n())
 
 
-par(mfrow = c(1,2))
+ad_ratio_log <- train_log$ad_ratio
+summary(ad_ratio_log)
+
+train_log%>% 
+    group_by(ad_ratio) %>% 
+    dplyr::summarise(count=n())
+
+par(mfrow = c(1,4))
 hist(ad_ratio)
 boxplot(ad_ratio)
 
+hist(ad_ratio_log)
+boxplot(ad_ratio_log)
 
 
 ```
 Ad Area: 
 The description of this feature states that it has been normalised between 0 and 1. The majority of values are extremely small (0.001) or over 1, which is not consistent with this description. However, without more information regarding the data, we are reluctant to adjust the data further we are unsure if there is an error in the description or the normalised calculation. This will be further investigated in Phase 2 and adjustments will be made if necessary. 
+
 Ad Ratio:   
 The description of this feature stats that it has been normalised between 0 and 1. In comparison to Ad Area, the distribution does appear to largely fall within 0 and 1, with a median value of 1. There are a small number of instances with values greater than 1. Similar to Ad Area, without further information regarding the data, it is difficult to say with certainty that these are outliers so we have decided not to constrain the data using winsorisation. This will be further evaluated during modelling and adjusted if necessary. 
+
+The log transformation does not do much to normalise the distribution of the data.  
 
 ```{r}
 #--------------------[Requests]----------------------#
 
 
-reqs <- advertising_train$requests
-summary(reqs)
 
-advertising_train %>% 
+requests <- train$requests
+summary(requests)
+
+train %>% 
     group_by(requests) %>% 
     dplyr::summarise(count=n())
 
-hist(reqs)
-boxplot(reqs)
+
+requests_log <- train_log$requests
+summary(requests_log)
+
+train_log%>% 
+    group_by(requests) %>% 
+    dplyr::summarise(count=n())
+
+par(mfrow = c(1,4))
+hist(requests)
+boxplot(requests)
+
+hist(requests_log)
+boxplot(requests_log)
 
 ```
 ```{r}
 #--------------------[Impression]----------------------#
 
 
-imp <- advertising_train$impression
-summary(imp)
 
-advertising_train %>% 
+impression <- train$impression
+summary(impression)
+
+train %>% 
     group_by(impression) %>% 
     dplyr::summarise(count=n())
 
-hist(imp)
-boxplot(imp)
+
+impression_log <- train_log$impression
+summary(impression_log)
+
+train_log%>% 
+    group_by(impression) %>% 
+    dplyr::summarise(count=n())
+
+par(mfrow = c(1,4))
+hist(impression)
+boxplot(impression)
+
+hist(impression_log)
+boxplot(impression_log)
 ```
 Requests and Impression:  
 These features are very similar, with the majority of instances taking the value of zero. The data is spread across a very long range, with the maximum value of Requests equal to 6,701,924 and the maximum value of Impression equal to 6,100,324.
 
+The log transformation improves the distribution of the data. 
+
 ```{r}
 #--------------------[CPC - Cost per click]----------------------#
 
-cpc <- advertising_train$cpc
+cpc <- train$cpc
 summary(cpc)
 
-advertising_train %>% 
+train %>% 
     group_by(cpc) %>% 
     dplyr::summarise(count=n())
 
+
+cpc_log <- train_log$cpc
+summary(cpc_log)
+
+train_log%>% 
+    group_by(cpc) %>% 
+    dplyr::summarise(count=n())
+
+par(mfrow = c(1,4))
 hist(cpc)
 boxplot(cpc)
+
+hist(cpc_log)
+boxplot(cpc_log)
 ```
 ```{r}
 #--------------------[CTR - click through rate]----------------------#
 
 
-ctr <- advertising_train$ctr
+ctr <- train$ctr
 summary(ctr)
 
-advertising_train %>% 
+train %>% 
     group_by(ctr) %>% 
     dplyr::summarise(count=n())
 
+
+ctr_log <- train_log$ctr
+summary(ctr_log)
+
+train_log%>% 
+    group_by(ctr) %>% 
+    dplyr::summarise(count=n())
+
+par(mfrow = c(1,4))
 hist(ctr)
 boxplot(ctr)
 
+hist(ctr_log)
+boxplot(ctr_log)
+
 ```
 Cost Per Click (CPC) and Click Through Rate (CTR):
-Majority of values are zero. Additional analysis is conducted below in order to disaggregate the zero value instances from the rest. 
+Majority of values are zero and the log transformation does not do much to improve the skewedness of the data. Additional analysis is conducted below in order to disaggregate the zero value instances from the rest. 
 
 ```{r}
 #--------------------[Viewability]----------------------#
 
+viewability <- train$viewability
+summary(viewability)
 
-view <- advertising_train$viewability
-summary(view)
-
-advertising_train %>% 
+train %>% 
     group_by(viewability) %>% 
     dplyr::summarise(count=n())
 
-hist(view)
-boxplot(view)
+
+viewability_log <- train_log$viewability
+summary(viewability_log)
+
+train_log%>% 
+    group_by(viewability) %>% 
+    dplyr::summarise(count=n())
+
+par(mfrow = c(1,4))
+hist(viewability)
+boxplot(viewability)
+
+hist(viewability_log)
+boxplot(viewability_log)
 
 ```
-Viewability: Similar to the other advertisement metric data, the majority of instances take on the value of zero.  
+Viewability: 
+Similar to the other advertisement metric data, the majority of instances take on the value of zero. The log transformation improves the skewedness of the data. 
 
 
 ```{r}
@@ -523,7 +632,7 @@ boxplot(advertising_train$ratio5)
 
 ```
 Ratio Features: 
-We pressume that these ratio features are calculated using the other advertisement metrics data. As such, it is no surprise to see a large amount of zero values. However, the normalising nature of the ratios nicely constrains the data values between 0 and 1. Since we do not have information on how these are calculated, our understanding of their use will come from examining correlation between ratios and other features later in the report. 
+We pressume that these ratio features are calculated using the other advertisement metrics data. As such, it is no surprise to see a large amount of zero values. However, the normalising nature of the ratios nicely constrains the data values between 0 and 1. We have chosen not to use the log transformation on the Ratio features as they are constrained and not as skewed as some of the other metrics. Since we do not have information on how these ratios are calculated, our understanding of their use will come from examining correlation between ratios and other features later in the report. 
 
 ```{r}
 #--------------------[Target Variable (y)]----------------------#
@@ -558,6 +667,8 @@ The majority of values fall below 1, while the maximum value is 47, resulting in
 
 ### Multivariate 
 ```{r}
+par(mfrow = c(1,1))
+
 y <- advertising_train$y
 
 boxplot(y~advertising_train$companyId)
@@ -625,7 +736,7 @@ plot(train1$avg_price, train1$y)
 plot(train1$max_price, train1$y)
 par(mfrow = c(1,1))
 
-# Pre Log trans PRICE
+# Price Data Comparison
 par(mfrow = c(3,1))
 plot(train$price1, train$y) # all pos skewed, majority at lower quartile of range, trace values at upper 3 quartiles
 plot(train$price2, train$y)
@@ -638,7 +749,7 @@ Note that the maximum price has the same distribution against the dependent vari
 
 ### Ratios
 ```{r}
-# Pre Log trans RATIO
+# Ratio Data Comparison
 par(mfrow = c(1,5))
 plot(train$ratio1, train$y) # majority of variation at 0 and 1 ratios 
 plot(train$ratio2, train$y) # majority of variation at 0 and 1 ratios 
@@ -710,12 +821,15 @@ summary(cpcmore_y)
 # Statistical Investigation
 
 ## Linear Correlations
+
+After examining the distributions of the descriptive features, we have decided to use Spearman's calculation for correlation rather than Pearson as many of the features appear to not follow a normal distribution.
 ```{r}
 
 
 #Calculate correlation between numeric variables:
 train_num <- train %>% select(price1, price2, price3, ad_area, ad_ratio, requests, impression, cpc, ctr, viewability, ratio1, ratio2, ratio3, ratio4, ratio5)
-res <- cor(train_num)
+res <- cor(train_num, method = "spearman")
+
 round(res, 2)
 
 corrplot(res, order = "hclust", 
@@ -723,43 +837,58 @@ corrplot(res, order = "hclust",
 ```
 
 Notable Correlations:  
-- Very strong positive correlation between Impression and Request of 0.98. These features are more or less redundant so only one will be included in the machine learning modelling. 
-- Very strong positive correlation between Price 1, Price 2 and Price 3. Additional analysis conducted below. 
-- Very strong positive correlation between Ratio 1 and Ratio 2 of 0. 84. Additional analysis conducted below. 
-- Strong positive correlation between Ratio 1 and Viewability of 0.78. 
-- Strong positive correlation between Ratio 2 and Viewability of 0.71.
+
+* Very strong positive correlation between Impression and Request of 0.99. These features are more or less redundant so only one will be included in the machine learning modelling. 
+
+* Very strong positive correlation between Price 1, Price 2 and Price 3. Additional analysis conducted below.
+
+* Very strong positive correlation between CPC and Impression of 0.88.
+
+* Very strong positive correlation between CTR and Viewability of 0.88. 
+
+* Very strong positive correlation between Ratio 4 and Ratio 5 of 0.83. Additional analysis conducted below. 
+
 
 
 ```{r}
 #Focus on correlation between price variables:
 train_price <- train %>% select(price1,price2,price3)
-res_price <- cor(train_price)
+res_price <- cor(train_price, method = "spearman")
 round(res_price,2)
 ```
 Findings:  
-- Correlation between Price 1 and Price 2: 0.90
-- Correlation between Price 2 and Price 3: 0.94
-- Correlation between Price 3 and Price 1: 0.77
+
+* Correlation between Price 1 and Price 2: 0.97 
+
+* Correlation between Price 2 and Price 3: 0.99
+
+* Correlation between Price 3 and Price 1: 0.96
 
 The strong positive correlation between the price measures indicates they all provide relatively similar information with respect to predicting the dependent variable y. Therefore, it is likely we only need to use price variable for training the algorithm as correlation is very high - potentially the average price calculated before. 
 
 ```{r}
 #Focus on the correlation between ratio variables:
 train_ratio <- train %>% select(ratio1, ratio2, ratio3, ratio4, ratio5)
-res_ratio <- cor(train_ratio)
+res_ratio <- cor(train_ratio, method = "spearman")
 round(res_ratio,2)
 corrplot(res_ratio, order = "hclust", 
          tl.col = "black", tl.srt = 45)
 ```
-Findings:  
-- Correlation between Ratio 1 and Ratio 2 is 0.84
-- Correlation between Ratio 1 and Ratio 3 is 0.52
-- Correlation between Ratio 2 and Ratio 5 is 0.48
-- Correlation between Ratio 5 and Ratio 1 is 0.45
-- Correlation between Ratio 2 and Ratio 3 is 0.43
-- All other ratio features have weaker correlation
+Findings:
 
-The strong positive correlation between Ratio 1 and Ratio 2 raises the question as to whether both metrics are useful to conclude in the machine learning modelling. In the correlation matrix calculated for the whole data set, both ratios are strongly positively correlated to Viewability of over 0.70. It may be preferable to simply use Viewability in the modelling and exclude Ratio 1 and Ratio 2 if they provide largely redundant information.
+* Correlation between Ratio 4 and Ratio 5 is 0.83
+
+* Correlation between Ratio 1 and Ratio 2 is 0.72
+
+* Correlation between Ratio 1 and Ratio 3 is 0.66
+
+* Correlation between Ratio 2 and Ratio 3 is 0.62
+
+* Correlation between Ratio 5 and Ratio 1 is 0.45
+
+* All other ratio features have weaker correlation
+
+The strong positive correlation between Ratio 4 and Ratio 5 raises the question as to whether both metrics are useful to conclude in the machine learning modelling. 
 
 The rest of the ratios exhibit a sufficiently weak correlation that we would want to initally include them in modelling. 
 
@@ -767,21 +896,28 @@ The rest of the ratios exhibit a sufficiently weak correlation that we would wan
 ```{r}
 #Focus on the advertisement metrics data
 train_metrics <- train %>% select(ad_area, ad_ratio, requests, impression, cpc, ctr, viewability)
-res_metrics <- cor(train_metrics)
+res_metrics <- cor(train_metrics, method = "spearman")
 round(res_metrics, 2)
 corrplot(res_metrics, order = "hclust", 
          tl.col = "black", tl.srt = 45)
 
 ```
 Findings:  
-- Correlation between Impression and Requests is 0.98 
-- Correlation between Viewability and CTR is 0.41
-- All other metrics have weak correlation
+
+* Correlation between Impression and Requests is 0.99
+
+* Correlation between Viewability and CTR is 0.88
+
+* Correlation between CPC and Requests is 0.88
+
+* Correlation between CPC and Impression is 0.88
+
+* All other metrics have weak correlation
 
 Given Impression and Requests are almost completely correlated, it is highly unlikely that we would want to include both features in our machine learning model.
 
 ```{r}
-res_y <- cor(train$y,train_num)
+res_y <- cor(train$y,train_num, method = "spearman")
 kable(round(res_y, 3))
 ```
 None of the descriptive features are highly correlated with the target feature y. 
