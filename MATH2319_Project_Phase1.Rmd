@@ -6,8 +6,7 @@ output:
    html_document:
       toc: true
       toc_depth: 3
-      prettydoc::html_pretty:
-      theme: tactile
+      theme: cosmo
       
 ---
 
@@ -92,7 +91,6 @@ library(corrplot)
 advertising_train <- read.csv("~/Uni/Machine Learning/advertising_train.csv", header = TRUE, stringsAsFactors = FALSE)
 
 head(advertising_train)
-tail(advertising_train)
 dim(advertising_train)
 str(advertising_train)
 names(advertising_train)
@@ -131,10 +129,12 @@ Case ID: categorical
 
 # Cleaning and Preparing Data
 
-```{r echo=TRUE}
+```{r echo=TRUE, fig.height=3, fig.width=5}
 kable(summary(advertising_train))
 
 ```
+
+
 ## Transformation and Pre Processing
 
 ### Factorisation of Categorical Variables
@@ -276,6 +276,8 @@ day %>%
 
 
 ```
+Distribution is largely uniform, with a particularly low number of instances on Day 2. 
+
 #Numeric Features
 ```{r}
 #--------------------[Price 1]----------------------#
@@ -416,10 +418,14 @@ boxplot(ad_ratio_log)
 
 
 ```
-Ad Area: 
+
+
+Ad Area:   
+
 The description of this feature states that it has been normalised between 0 and 1. The majority of values are extremely small (0.001) or over 1, which is not consistent with this description. However, without more information regarding the data, we are reluctant to adjust the data further we are unsure if there is an error in the description or the normalised calculation. This will be further investigated in Phase 2 and adjustments will be made if necessary. 
 
-Ad Ratio:   
+Ad Ratio:  
+
 The description of this feature stats that it has been normalised between 0 and 1. In comparison to Ad Area, the distribution does appear to largely fall within 0 and 1, with a median value of 1. There are a small number of instances with values greater than 1. Similar to Ad Area, without further information regarding the data, it is difficult to say with certainty that these are outliers so we have decided not to constrain the data using winsorisation. This will be further evaluated during modelling and adjusted if necessary. 
 
 The log transformation does not do much to normalise the distribution of the data.  
@@ -479,7 +485,10 @@ boxplot(impression)
 hist(impression_log)
 boxplot(impression_log)
 ```
+
+
 Requests and Impression:  
+
 These features are very similar, with the majority of instances taking the value of zero. The data is spread across a very long range, with the maximum value of Requests equal to 6,701,924 and the maximum value of Impression equal to 6,100,324.
 
 The log transformation improves the distribution of the data. 
@@ -536,7 +545,9 @@ hist(ctr_log)
 boxplot(ctr_log)
 
 ```
+
 Cost Per Click (CPC) and Click Through Rate (CTR):
+
 Majority of values are zero and the log transformation does not do much to improve the skewedness of the data. Additional analysis is conducted below in order to disaggregate the zero value instances from the rest. 
 
 ```{r}
@@ -565,7 +576,9 @@ hist(viewability_log)
 boxplot(viewability_log)
 
 ```
+
 Viewability: 
+
 Similar to the other advertisement metric data, the majority of instances take on the value of zero. The log transformation improves the skewedness of the data. 
 
 
@@ -578,6 +591,7 @@ advertising_train %>%
     group_by(ratio1) %>% 
     dplyr::summarise(count=n())
 
+par(mfrow = c(1,2))
 hist(advertising_train$ratio1)
 boxplot(advertising_train$ratio1)
 ```
@@ -590,6 +604,7 @@ advertising_train %>%
     group_by(ratio2) %>% 
     dplyr::summarise(count=n())
 
+par(mfrow = c(1,2))
 hist(advertising_train$ratio2)
 boxplot(advertising_train$ratio2)
 ```
@@ -602,6 +617,7 @@ advertising_train %>%
     group_by(ratio3) %>% 
     dplyr::summarise(count=n())
 
+par(mfrow = c(1,2))
 hist(advertising_train$ratio3)
 boxplot(advertising_train$ratio3)
 ```
@@ -614,6 +630,7 @@ advertising_train %>%
     group_by(ratio4) %>% 
     dplyr::summarise(count=n())
 
+par(mfrow = c(1,2))
 hist(advertising_train$ratio4)
 boxplot(advertising_train$ratio4)
 ```
@@ -626,12 +643,17 @@ advertising_train %>%
     group_by(ratio5) %>% 
     dplyr::summarise(count=n())
 
+par(mfrow = c(1,2))
 hist(advertising_train$ratio5)
 boxplot(advertising_train$ratio5)
 
 
 ```
+
+
 Ratio Features: 
+
+
 We pressume that these ratio features are calculated using the other advertisement metrics data. As such, it is no surprise to see a large amount of zero values. However, the normalising nature of the ratios nicely constrains the data values between 0 and 1. We have chosen not to use the log transformation on the Ratio features as they are constrained and not as skewed as some of the other metrics. Since we do not have information on how these ratios are calculated, our understanding of their use will come from examining correlation between ratios and other features later in the report. 
 
 ```{r}
@@ -661,19 +683,22 @@ boxplot(y_log)
 
 
 ```
+
+
 Target Feature (y):  
+
 The majority of values fall below 1, while the maximum value is 47, resulting in highly positively skewed data. By applying a log transformation to the target feature, the distribution is greatly improved in terms of normality. For creating a machine learning model, we will use log transformed values of y. This means that once the model is determined and predictions are calculated, they will have to be returned from log values to original values. 
 
 
 ### Multivariate 
-```{r}
+```{r fig.height=3, fig.width=4}
 par(mfrow = c(1,1))
 
 y <- advertising_train$y
 
-boxplot(y~advertising_train$companyId)
+boxplot(y~advertising_train$companyId) #Largest spread of y values for Company ID 43 which had the largest number of instances
 
-plot(y~advertising_train$countryId)
+plot(y~advertising_train$countryId) 
 
 boxplot(y~advertising_train$deviceType)
 
@@ -758,6 +783,8 @@ plot(train$ratio4, train$y) # majority of variation at 0
 plot(train$ratio5, train$y) # majority of variation at 0 and some at 1 ratios, with some exceeding 1
 par(mfrow = c(1,1))
 ```
+
+All three ratios have a reasonable amount of spread bwetween y variables, with most values of y falling below 20. On the left-hand side of the plots, some of the highest values of y are attributed to instances where the value of the ratio is zero. 
 
 ### CPC and CTR
 Cost Per Click (also known as PPC, Pay Per Click) and Click Through Rate will be investigated for impact on each other and on the target variable.
@@ -856,6 +883,8 @@ train_price <- train %>% select(price1,price2,price3)
 res_price <- cor(train_price, method = "spearman")
 round(res_price,2)
 ```
+
+
 Findings:  
 
 * Correlation between Price 1 and Price 2: 0.97 
@@ -874,6 +903,7 @@ round(res_ratio,2)
 corrplot(res_ratio, order = "hclust", 
          tl.col = "black", tl.srt = 45)
 ```
+
 Findings:
 
 * Correlation between Ratio 4 and Ratio 5 is 0.83
@@ -883,8 +913,6 @@ Findings:
 * Correlation between Ratio 1 and Ratio 3 is 0.66
 
 * Correlation between Ratio 2 and Ratio 3 is 0.62
-
-* Correlation between Ratio 5 and Ratio 1 is 0.45
 
 * All other ratio features have weaker correlation
 
@@ -902,6 +930,7 @@ corrplot(res_metrics, order = "hclust",
          tl.col = "black", tl.srt = 45)
 
 ```
+
 Findings:  
 
 * Correlation between Impression and Requests is 0.99
@@ -920,6 +949,8 @@ Given Impression and Requests are almost completely correlated, it is highly unl
 res_y <- cor(train$y,train_num, method = "spearman")
 kable(round(res_y, 3))
 ```
+
+
 None of the descriptive features are highly correlated with the target feature y. 
 
 # Summary
