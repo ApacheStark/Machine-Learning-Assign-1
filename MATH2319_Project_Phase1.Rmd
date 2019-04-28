@@ -696,47 +696,47 @@ par(mfrow = c(1,1))
 
 y <- advertising_train$y
 
-boxplot(y~advertising_train$companyId) #Largest spread of y values for Company ID 43 which had the largest number of instances
+boxplot(y~advertising_train$companyId, main = " Y & Company ID") #Largest spread of y values for Company ID 43 which had the largest number of instances
 
-plot(y~advertising_train$countryId) 
+plot(y~advertising_train$countryId, main = " Y & Country ID") 
 
-boxplot(y~advertising_train$deviceType)
+boxplot(y~advertising_train$deviceType, main = " Y & Device Type")
 
-plot(y~advertising_train$day)
+plot(y~advertising_train$day, main = " Y & Training Day")
 
-boxplot(y~advertising_train$dow)
+boxplot(y~advertising_train$dow, main = " Y & Day of the Week")
 
-plot(y~advertising_train$price1)
+plot(y~advertising_train$price1, main = " Y & Price 1")
 
-plot(y~advertising_train$price2)
+plot(y~advertising_train$price2, main = " Y & Price 2")
 
-plot(y~advertising_train$price3)
+plot(y~advertising_train$price3, main = " Y & Price 3")
 
-plot(y~advertising_train$ad_ratio)
+plot(y~advertising_train$ad_ratio, main = " Y & Ad Ratio")
 
-plot(y~advertising_train$ad_area)
+plot(y~advertising_train$ad_area, main = " Y & Ad Area")
 
-plot(y~advertising_train$requests)
+plot(y~advertising_train$requests, main = " Y & Requests")
 
-plot(y~advertising_train$impression)
+plot(y~advertising_train$impression, main = " Y & Impression")
 
-plot(y~advertising_train$cpc)
+plot(y~advertising_train$cpc, main = " Y & Cost Per Click")
 
-plot(y~advertising_train$ctr)
+plot(y~advertising_train$ctr, main = " Y & Click Through Rate")
 
-plot(y~advertising_train$viewability)
+plot(y~advertising_train$viewability, main = " Y & Viewability")
 
-plot(y~advertising_train$requests)
+plot(y~advertising_train$requests, main = " Y & Requests")
 
-plot(y~advertising_train$ratio1)
+plot(y~advertising_train$ratio1, main = " Y & Ratio 1")
 
-plot(y~advertising_train$ratio2)
+plot(y~advertising_train$ratio2, main = " Y & Ratio 2")
 
-plot(y~advertising_train$ratio3)
+plot(y~advertising_train$ratio3, main = " Y & Ratio 3")
 
-plot(y~advertising_train$ratio4)
+plot(y~advertising_train$ratio4, main = " Y & Ratio 4")
 
-plot(y~advertising_train$ratio5)
+plot(y~advertising_train$ratio5, main = " Y & Ratio 5")
 
 
 ```
